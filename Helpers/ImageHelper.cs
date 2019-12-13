@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using PuppeteerSharp;
 using ScrapingFunction.Models;
+using SixLabors.ImageSharp;
 
 namespace ScrapingFunction.Helpers
 {
@@ -39,12 +40,16 @@ namespace ScrapingFunction.Helpers
                 try
                 {
                     var webRequest = HttpWebRequest.Create(imgSrc);
+                    webRequest.Method = "HEAD";
                     var webResponse = webRequest.GetResponse();
                     float contentLength = webResponse.ContentLength;
 
-                    Stream stream = webResponse.GetResponseStream();
-
                     //TODO: Get Original Image dimension
+                    using (Image iImage = Image.Load(imgSrc))
+                    {
+                        originalImageHeight = iImage.Height;
+                        originalImageWidth = iImage.Width;
+                    }
 
                     usedImageHeight = int.Parse(await imageElement.EvaluateFunctionAsync<string>("i => i.height"));
                     usedImageWidth = int.Parse(await imageElement.EvaluateFunctionAsync<string>("i => i.width"));
