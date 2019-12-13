@@ -18,7 +18,7 @@ namespace ScrapingFunction
     {
         [FunctionName("Scrape")]
         public static async Task<ScanResultModel> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("Funtion triggered");
